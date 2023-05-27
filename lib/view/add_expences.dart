@@ -1,16 +1,18 @@
+import 'package:date_time_field/date_time_field.dart';
 import 'package:expences_app/controller/bottom_navigation_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class AddExpences extends StatelessWidget {
-   AddExpences({Key? key}) : super(key: key);
+  AddExpences({Key? key}) : super(key: key);
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-   final TextEditingController _dateController = TextEditingController();
+  TextEditingController dateInputController = TextEditingController();
 
-   GlobalKey<FormState> formstate = new GlobalKey<FormState>();
-   BottomNavigationController bottomNavigationController =
-   Get.put(BottomNavigationController());
+  GlobalKey<FormState> formstate = new GlobalKey<FormState>();
+  BottomNavigationController bottomNavigationController =
+      Get.put(BottomNavigationController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +44,10 @@ class AddExpences extends StatelessWidget {
             children: [
               Container(
                   alignment: Alignment.topRight,
-                  child: Text('العنوان',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),)),
+                  child: Text(
+                    'العنوان',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  )),
               Expanded(
                 child: Column(
                   children: [
@@ -67,7 +72,11 @@ class AddExpences extends StatelessWidget {
                     ),
                     Container(
                         alignment: Alignment.topRight,
-                        child: Text('المبلغ',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),)),
+                        child: Text(
+                          'المبلغ',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 20),
+                        )),
                     SizedBox(
                       height: 5,
                     ),
@@ -78,7 +87,7 @@ class AddExpences extends StatelessWidget {
                       decoration: InputDecoration(
                         hintText: 'أدخل المبلغ المصروف',
                         enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide( width: 1),
+                          borderSide: BorderSide(width: 1),
                           borderRadius: BorderRadius.circular(15),
                         ),
                       ),
@@ -88,17 +97,42 @@ class AddExpences extends StatelessWidget {
                         }
                       },
                     ),
-                    Obx(() => TextFormField(
-                      controller: _dateController,
-                      onTap: bottomNavigationController.selectedDate,
-                      textAlign: TextAlign.end,
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      alignment: Alignment.topRight,
+                      child: Text(
+                        'التاريخ',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                    TextFormField(
                       decoration: InputDecoration(
-                        hintText: "dd-MM-yyyy",
+                        hintText: 'التاريخ',
                         enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide( width: 1),
+                          borderSide: BorderSide(width: 1),
                           borderRadius: BorderRadius.circular(15),
                         ),
-                      ),)),
+                      ),
+                      controller: dateInputController,
+                      textAlign: TextAlign.end,
+                      readOnly: true,
+                      onTap: () async {
+                        DateTime? pickedDate = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(1950),
+                            lastDate: DateTime(2050));
+
+                        if (pickedDate != null) {
+                          dateInputController.text = pickedDate.toString();
+                        }
+                      },
+                    ),
                   ],
                 ),
               ),
@@ -123,7 +157,6 @@ class AddExpences extends StatelessWidget {
               //     ),
               //   ),
               // ),
-
             ],
           ),
         ),
