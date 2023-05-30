@@ -11,9 +11,11 @@ class NavigationPage extends StatelessWidget {
 
   NavigationPage({Key? key}) : super(key: key);
   final screen = [
+
+    FirstPage(),
     AddExpences(),
     NewType(),
-    FirstPage(),
+
 
   ];
 

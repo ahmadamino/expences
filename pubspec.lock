@@ -49,14 +49,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.5"
-  date_time_field:
-    dependency: "direct main"
-    description:
-      name: date_time_field
-      sha256: ae89375355c00589c332b5120b27f33b10d6f69a23da82051cf5b9c4e6dfdc38
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.2"
   fake_async:
     dependency: transitive
     description:

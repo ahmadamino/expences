@@ -1,5 +1,6 @@
-import 'package:date_time_field/date_time_field.dart';
 import 'package:expences_app/controller/bottom_navigation_controller.dart';
+import 'package:expences_app/controller/expences_controller.dart';
+import 'package:expences_app/model/expences.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -8,7 +9,6 @@ class AddExpences extends StatelessWidget {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   TextEditingController dateInputController = TextEditingController();
-
   GlobalKey<FormState> formstate = new GlobalKey<FormState>();
   BottomNavigationController bottomNavigationController =
       Get.put(BottomNavigationController());
@@ -92,8 +92,8 @@ class AddExpences extends StatelessWidget {
                         ),
                       ),
                       validator: (val) {
-                        if (val!.length < 4) {
-                          return 'لايمكن ان يكون النص اقل من اربع احرف';
+                        if (val!.length < 1) {
+                          return 'لايمكن ان يكون النص اقل من رقم';
                         }
                       },
                     ),
@@ -120,7 +120,6 @@ class AddExpences extends StatelessWidget {
                       ),
                       controller: dateInputController,
                       textAlign: TextAlign.end,
-                      readOnly: true,
                       onTap: () async {
                         DateTime? pickedDate = await showDatePicker(
                             context: context,
@@ -133,34 +132,43 @@ class AddExpences extends StatelessWidget {
                         }
                       },
                     ),
+                    SizedBox(height: 10,),
+                    ElevatedButton(
+                      onPressed: () {
+                        if (formstate.currentState!.validate()) {
+                          Navigator.of(context).pop(
+                            Expences(
+                              title: _titleController.text,
+                              money: _descriptionController.hashCode,
+                              date: dateInputController.text,
+                            ),
+                          );
+                        } else {
+                          return null;
+                        }
+                      },
+                      child: const Text(
+                        'اضافة المصروف',
+                        style: TextStyle(fontSize: 25),
+                      ),
+                    ),
                   ],
                 ),
               ),
-              // Padding(
-              //   padding: const EdgeInsets.all(8.0),
-              //   child: ElevatedButton(
-              //     onPressed: () {
-              //       if (formstate.currentState!.validate()) {
-              //         Navigator.of(context).pop(
-              //           Task(
-              //             title: _titleController.text,
-              //             description: _descriptionController.text,
-              //           ),
-              //         );
-              //       } else {
-              //         return null;
-              //       }
-              //     },
-              //     child: const Text(
-              //       'Save',
-              //       style: TextStyle(fontSize: 25),
-              //     ),
-              //   ),
-              // ),
+
+
             ],
           ),
         ),
       ),
     );
+  }
+  void _openAddTaskPage() async {
+    ExpencesController expencesController = Get.put(ExpencesController());
+
+    final result = await Get.to(AddExpences());
+    if (result != null) {
+      expencesController.addTask(result as Expences);
+    }
   }
 }
