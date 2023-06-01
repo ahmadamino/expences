@@ -19,4 +19,9 @@ class TypeController extends GetxController {
     _typeExpences.remove(typeExpences);
     update();
   }
+void updateTask(TypeExpences e,String title){
+    e.title=title;
+    update();
+
+}
 }

@@ -1,5 +1,5 @@
 class TypeExpences{
-  final String title;
+   String title;
 
   TypeExpences({required this.title});
 

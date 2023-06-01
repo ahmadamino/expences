@@ -17,14 +17,14 @@ class ExpencesTile extends StatelessWidget {
                   height: 200,
                 ),
                 Text(
-                  'لا يوجد اي ملاحظة انقر + للاضافة',
-                  style: TextStyle(fontSize: 10, color: Colors.teal),
+                  'لا يوجد اي مصروف حاليا',
+                  style: TextStyle(fontSize: 10, color: Colors.blue),
                 ),
                 SizedBox(height: 10),
                 Image.asset(
                   'images/docments.png',
                   height: 100,
-                  color: Colors.teal,
+                  color: Colors.blue,
                 ),
               ],
             ),
@@ -36,14 +36,20 @@ class ExpencesTile extends StatelessWidget {
           itemCount: expencesController.expences.length,
           itemBuilder: (context, i) {
             final expences = expencesController.expences[i];
-            return ListTile(
-              title: Text(expences.title),
-              leading: Text(expences.money as String),
-              trailing: IconButton(
-                onPressed: () {
-                  expencesController.remove(expences);
-                },
-                icon: Icon(Icons.delete),
+            return Card(
+              child: ListTile(
+
+                title: Text(expences.title,style: TextStyle(fontWeight: FontWeight.bold),),
+                leading:IconButton(
+                  onPressed: () {
+                    expencesController.remove(expences);
+                  },
+                  icon: Icon(Icons.delete),
+                ),
+                trailing:Container(
+                  padding: EdgeInsets.all(15),
+                    color: Colors.blue,
+                    child: Text("${expences.money}")),
               ),
             );
           },

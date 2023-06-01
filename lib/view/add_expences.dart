@@ -3,6 +3,7 @@ import 'package:expences_app/controller/expences_controller.dart';
 import 'package:expences_app/model/expences.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:expences_app/main.dart';
 
 class AddExpences extends StatelessWidget {
   AddExpences({Key? key}) : super(key: key);
@@ -17,7 +18,11 @@ class AddExpences extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('مصروف جديد'),
+        elevation: 0,
+        title: Text(
+          'مصروف جديد',
+          style: Theme.of(context).textTheme.headline6,
+        ),
         leading: Container(
           height: 50,
           width: 50,
@@ -28,9 +33,9 @@ class AddExpences extends StatelessWidget {
           IconButton(
               onPressed: () {
                 if (Get.isDarkMode) {
-                  Get.changeTheme(ThemeData.light());
+                  Get.changeTheme(Themes.customLightTheme);
                 } else {
-                  Get.changeTheme(ThemeData.dark());
+                  Get.changeTheme(Themes.customDarkTheme);
                 }
               },
               icon: Icon(Icons.sunny))
@@ -50,6 +55,7 @@ class AddExpences extends StatelessWidget {
                   )),
               Expanded(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     TextFormField(
                       controller: _titleController,
@@ -132,17 +138,28 @@ class AddExpences extends StatelessWidget {
                         }
                       },
                     ),
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
                     ElevatedButton(
                       onPressed: () {
                         if (formstate.currentState!.validate()) {
-                          Navigator.of(context).pop(
-                            Expences(
-                              title: _titleController.text,
-                              money: _descriptionController.hashCode,
-                              date: dateInputController.text,
-                            ),
+                          final exp = Expences(
+                            title: _titleController.text,
+                            money:
+                                double.tryParse(_descriptionController.text) ??
+                                    0.0,
+                            date: dateInputController.text,
                           );
+                          _openAddTaskPage(exp);
+
+                          // Navigator.of(context).pop(
+                          //   Expences(
+                          //     title: _titleController.text,
+                          //     money: _descriptionController.text,
+                          //     date: dateInputController.text,
+                          //   ),
+                          // );
                         } else {
                           return null;
                         }
@@ -155,20 +172,22 @@ class AddExpences extends StatelessWidget {
                   ],
                 ),
               ),
-
-
             ],
           ),
         ),
       ),
     );
   }
-  void _openAddTaskPage() async {
-    ExpencesController expencesController = Get.put(ExpencesController());
 
-    final result = await Get.to(AddExpences());
-    if (result != null) {
-      expencesController.addTask(result as Expences);
-    }
+  void _openAddTaskPage(Expences expences) async {
+    ExpencesController expencesController = Get.put(ExpencesController());
+    expencesController.addTask(expences);
+    BottomNavigationController bottomNavigationController =
+        Get.put(BottomNavigationController());
+    bottomNavigationController.changeIndex(0);
+    // final result = await Get.to(AddExpences());
+    // if (result != null) {
+    //   expencesController.addTask(result as Expences);
+    // }
   }
 }

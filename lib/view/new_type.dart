@@ -1,10 +1,10 @@
 import 'package:expences_app/controller/type_controller.dart';
-import 'package:expences_app/model/expences.dart';
 import 'package:expences_app/view/add_type_expences.dart';
 import 'package:expences_app/view/type_details_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:expences_app/model/type.dart';
+import 'package:expences_app/main.dart';
 
 class NewType extends StatelessWidget {
   TypeController typeController = Get.put(TypeController());
@@ -13,7 +13,11 @@ class NewType extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('الاصناف'),
+        elevation: 0,
+        title: Text(
+          'الاصناف',
+          style: Theme.of(context).textTheme.headline6,
+        ),
         leading: Container(
           height: 50,
           width: 50,
@@ -24,9 +28,9 @@ class NewType extends StatelessWidget {
           IconButton(
               onPressed: () {
                 if (Get.isDarkMode) {
-                  Get.changeTheme(ThemeData.light());
+                  Get.changeTheme(Themes.customLightTheme);
                 } else {
-                  Get.changeTheme(ThemeData.dark());
+                  Get.changeTheme(Themes.customDarkTheme);
                 }
               },
               icon: Icon(Icons.sunny))
@@ -45,7 +49,9 @@ class NewType extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final typeEx = typeController.typesExpences[index];
                   return InkWell(
-                    onTap:(){ _openTypeDetialsPage(typeEx);},
+                    onTap: () {
+                      _openTypeDetialsPage(typeEx);
+                    },
                     child: Container(
                       decoration: BoxDecoration(
                         color: Colors.brown,
@@ -79,7 +85,10 @@ class NewType extends StatelessWidget {
       typeController.addTask(result as TypeExpences);
     }
   }
-  void _openTypeDetialsPage(TypeExpences typeExpences)async{
-    Get.to(TypeDetailsPage(typeExpences: typeExpences,));
+
+  void _openTypeDetialsPage(TypeExpences typeExpences) async {
+    Get.to(TypeDetailsPage(
+      typeExpences: typeExpences,
+    ));
   }
 }
